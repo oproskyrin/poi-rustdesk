@@ -2595,7 +2595,9 @@ class _AboutState extends State<_About> {
       final scrollController = ScrollController();
       return SingleChildScrollView(
         controller: scrollController,
-        child: _Card(title: translate('About RustDesk'), children: [
+        child: _Card(
+            title: '${translate('About')} ${bind.mainGetAppNameSync()}',
+            children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -2645,6 +2647,10 @@ class _AboutState extends State<_About> {
                           Text(
                             'Copyright © ${DateTime.now().toString().substring(0, 4)} Purslane Tech Pte. Ltd.\n$license',
                             style: const TextStyle(color: Colors.white),
+                          ),
+                          const Text(
+                            'POI Connect build — based on RustDesk (AGPL-3.0)',
+                            style: TextStyle(color: Colors.white70, fontSize: 12.0),
                           ),
                           Text(
                             translate('Slogan_tip'),
