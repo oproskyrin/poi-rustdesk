@@ -1,0 +1,27 @@
+name: POI Windows Build
+# Сборка клиента POI Connect (форк RustDesk): только Windows x64.
+# Результат: prerelease с тегом "poi" (rustdesk-<версия>-x86_64.exe/.msi)
+# + артефакты прогона. Скачивание: Actions -> запуск -> Artifacts, либо
+# Releases -> tag "poi".
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - poi/main
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+
+permissions:
+  contents: write
+
+jobs:
+  poi-windows-build:
+    uses: ./.github/workflows/flutter-build.yml
+    secrets: inherit
+    with:
+      upload-artifact: true
+      upload-tag: "poi"
+      publish-update-metadata: false
+      only-windows: true
