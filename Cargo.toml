@@ -90,6 +90,13 @@ stunclient = "0.4"
 kcp-sys= { git = "https://github.com/rustdesk-org/kcp-sys", branch = "rustdesk-patches" }
 reqwest = { version = "0.12", features = ["blocking", "socks", "json", "native-tls", "rustls-tls", "rustls-tls-native-roots", "gzip", "zstd"], default-features=false }
 
+# POI Connect: собирать OpenSSL из исходников на не-MSVC таргетах (Linux и windows-gnu),
+# т.к. системный OpenSSL (напр. 4.x на Arch-подобных) несовместим с openssl-sys,
+# а native-tls на windows-gnu использует именно OpenSSL.
+# MSVC-сборка (CI, целевой продукт) использует schannel и этот блок не затрагивает.
+[target.'cfg(not(target_env = "msvc"))'.dependencies]
+openssl-sys = { version = "0.9", features = ["vendored"] }
+
 [target.'cfg(not(target_os = "linux"))'.dependencies]
 # https://github.com/rustdesk/rustdesk/discussions/10197, not use cpal on linux
 cpal = { git = "https://github.com/rustdesk-org/cpal", branch = "osx-screencapturekit" }
@@ -272,6 +279,10 @@ winapi = { version = "0.3", features = [ "winnt", "pdh", "synchapi" ] }
 cc = "1.0"
 hbb_common = { path = "libs/hbb_common" }
 os-version = "0.2"
+# POI Connect: см. блок vendored openssl выше — здесь то же самое для build-графа
+# (hbb_common тянет openssl-sys в build-dependencies для хоста).
+[target.'cfg(not(target_env = "msvc"))'.build-dependencies]
+openssl-sys = { version = "0.9", features = ["vendored"] }
 
 [dev-dependencies]
 hound = "3.5"
