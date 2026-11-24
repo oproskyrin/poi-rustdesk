@@ -47,6 +47,7 @@ pub fn core_main() -> Option<CoreMainAction> {
         return None;
     }
     crate::load_custom_client();
+    crate::poi_config::apply_embedded_defaults();
     #[cfg(windows)]
     if !crate::platform::windows::bootstrap() {
         // return None to terminate the process
